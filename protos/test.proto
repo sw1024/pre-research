@@ -1,0 +1,9 @@
+syntax = "proto3";
+package asce; //可选
+
+message GameInfo
+{
+	uint64	idx		= 1;
+	fixed64	fidx	= 2;
+	map<uint32, uint32>	mmp	= 3;
+}

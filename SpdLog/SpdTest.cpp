@@ -18,6 +18,7 @@
 #include <iostream>
 
 #include "unistd.h"
+#include "vartype.h"
 
 using spdlogType = std::shared_ptr<spdlog::async_logger>;
 
@@ -31,7 +32,7 @@ void ThreadPrint(int i)
 		tlog->info(" hello this is spdlog {}", i);
 	}
 	//tlog->flush();
-	sleep(1);
+	//sleep(1);
 }
 int main()
 {
@@ -42,7 +43,9 @@ int main()
 	sink_vec.push_back(std::make_shared<spdlog::sinks::hour_file_sink_mt>(filename));
 	//sink_vec.push_back(std::make_shared<spdlog::sinks::ansicolor_stdout_sink_mt>());
 	//创建异步写入log
-	auto tp = std::make_shared<spdlog::details::thread_pool>(1024,1);
+	//auto tp = std::make_shared<spdlog::details::thread_pool>(1024,1);
+	spdlog::init_thread_pool(1024,1);
+	auto tp = spdlog::thread_pool();
 	auto hour_logger = std::make_shared<spdlog::async_logger>(logname, std::begin(sink_vec), std::end(sink_vec), tp);
 	//设置日志输出等级
 	hour_logger->set_level(spdlog::level::trace);
@@ -69,6 +72,67 @@ int main()
 		it.join();
 	}
 
+	unsigned char	a = 11;
+	unsigned short	b = 12;
+	unsigned int	c = 13;
+	unsigned long	d = 14;
+
+	char	a1 = 21;
+	short	b1 = 22;
+	int		c1 = 23;
+	long	d1 = 24;
+
+	float a2 = 31;
+	double b2 = 32;
+	bool c2 = true;
+
+
+	{
+		Monster::VarType var(a);
+		std::cout<<"testvar:"<<var._var_string<<std::endl;
+	}
+	{
+		Monster::VarType var(b);
+		std::cout<<"testvar:"<<var._var_string<<std::endl;
+	}
+	{
+		Monster::VarType var(c);
+		std::cout<<"testvar:"<<var._var_string<<std::endl;
+	}
+	{
+		Monster::VarType var(d);
+		std::cout<<"testvar:"<<var._var_string<<std::endl;
+	}
+
+	{
+		Monster::VarType var(a1);
+		std::cout<<"testvar:"<<var._var_string<<std::endl;
+	}
+	{
+		Monster::VarType var(b1);
+		std::cout<<"testvar:"<<var._var_string<<std::endl;
+	}
+	{
+		Monster::VarType var(c1);
+		std::cout<<"testvar:"<<var._var_string<<std::endl;
+	}
+	{
+		Monster::VarType var(d1);
+		std::cout<<"testvar:"<<var._var_string<<std::endl;
+	}
+
+	{
+		Monster::VarType var(a2);
+		std::cout<<"testvar:"<<var._var_string<<std::endl;
+	}
+	{
+		Monster::VarType var(b2);
+		std::cout<<"testvar:"<<var._var_string<<std::endl;
+	}
+	{
+		Monster::VarType var(c2);
+		std::cout<<"testvar:"<<var._var_string<<std::endl;
+	}
 
 
 	spdlog::drop_all();
